@@ -24,3 +24,6 @@ doc/
 
 #Test data for data processing
 spec/lib/*.csv
+
+#Coverage
+coverage

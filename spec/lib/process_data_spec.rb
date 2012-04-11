@@ -25,11 +25,12 @@ describe ProcessData do
     it 'should create an artwork for an artist' do
       pending('test create an artwork')
     end
-    
+
     it 'should create an artwork for an artist' do
       pending('test create an artwork related to an artist')
     end
   end
 
   pending('should use mocks and stuff')
+
 end
