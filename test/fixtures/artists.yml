@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  museum_id: 1
+  name: MyString
+  display_name: MyString
+  birth: 1
+  death: 1
+  biography: MyText
+
+two:
+  museum_id: 1
+  name: MyString
+  display_name: MyString
+  birth: 1
+  death: 1
+  biography: MyText
