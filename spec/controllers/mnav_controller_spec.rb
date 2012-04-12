@@ -5,7 +5,8 @@ describe MnavController do
 
   describe "Artists JSON Responses" do
     before do
-      get :artist, :id => 914, :format => :json
+      @artist = create_artist
+      get :artist, :id => @artist.id, :format => :json
     end
 
     it "should get a 200 OK response" do
@@ -18,14 +19,13 @@ describe MnavController do
       json_response.should have_key("museum_id")
       json_response.should have_key("display_name")
     end
-
   end
 
   describe "Artworks JSON responses" do
     before do
-      get :artwork, :id => 1, :format => :json
+      @artwork = create_artwork
+      get :artwork, :id => @artwork.id, :format => :json
     end
-
     it "should get a 200 OK response" do
       response.response_code.should == 200
     end
@@ -40,7 +40,8 @@ describe MnavController do
 
   describe "Artist Artworks JSON" do
     before do
-      get :artist_artworks, :id => 92, :format => :json
+      @artist = create_artist_with_artwork
+      get :artist_artworks, :id => @artist.id, :format => :json
     end
 
     it "should get a 200 OK response" do
@@ -55,8 +56,8 @@ describe MnavController do
 
   describe "Artists XML Responses" do
     before do
-      @id = 914
-      get :artist, :id => @id, :format => :xml
+      @artist = create_artist
+      get :artist, :id => @artist.id, :format => :xml
       @xml = Nokogiri::XML(response.body)
     end
 
@@ -69,7 +70,7 @@ describe MnavController do
     end
 
     it "should get an artist and have certain structure" do
-      @xml.xpath("//id").inner_text.should eq(@id.to_s)
+      @xml.xpath("//id").inner_text.should eq(@artist.id.to_s)
       @xml.xpath("//name").should_not be nil
     end
 
@@ -77,8 +78,8 @@ describe MnavController do
 
   describe "Artworks XML responses" do
     before do
-      @id = 1
-      get :artwork, :id => @id, :format => :xml
+      @artwork = create_artwork
+      get :artwork, :id => @artwork.id, :format => :xml
       @xml = Nokogiri::XML(response.body)
     end
 
@@ -91,15 +92,15 @@ describe MnavController do
     end
 
     it "should get an artwork and have certain structure" do
-      @xml.xpath("//id").inner_text.should eq(@id.to_s)
+      @xml.xpath("//id").inner_text.should eq(@artwork.id.to_s)
       @xml.xpath("//title").should_not be nil
     end
   end
 
   describe "Artist Artworks XML" do
     before do
-      @id = 92
-      get :artist_artworks, :id => @id, :format => :xml
+      @artist = create_artist
+      get :artist_artworks, :id => @artist.id, :format => :xml
       @xml = Nokogiri::XML(response.body)
     end
 
@@ -119,6 +120,19 @@ describe MnavController do
         artwork_node.xpath("//museum_id").should_not be nil
       end
     end
+  end
+
+  def create_artist
+    artist = Artist.create(:museum_id => rand(10), :name => "Shigeru Miyamoto")
+  end
+
+  def create_artwork
+    Artwork.create(:museum_id => rand(10), :title => "Super Mario Bros")
+  end
+
+  def create_artist_with_artwork
+    artist = create_artist
+    artist.artworks.create(:museum_id => rand(10), :title => "Super Mario Bros")
   end
 
 end
