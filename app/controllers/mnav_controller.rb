@@ -1,4 +1,13 @@
+# Public - Controller for incoming API requests.
+# Renders JSON and XML.
 class MnavController < ApplicationController
+
+  # Public - Get an artist info
+  #
+  # Example:
+  #
+  #   GET /artist/:id
+  #
   def artist
     @artist = Artist.find(params[:id])
     respond_to do |format|
@@ -7,6 +16,11 @@ class MnavController < ApplicationController
     end
   end
 
+  # Public - Get an artist's artworks
+  #
+  # Example:
+  #   GET /artist/:id/artworks
+  #
   def artist_artworks
     @artist = Artist.find(params[:id])
     respond_to do |format|
@@ -15,6 +29,11 @@ class MnavController < ApplicationController
     end
   end
 
+  # Public - Get artwork
+  #
+  # Example:
+  #   GET /artwork/:id
+  #
   def artwork
     @artwork = Artwork.find(params[:id])
     respond_to do |format|
@@ -23,7 +42,20 @@ class MnavController < ApplicationController
     end
   end
 
+  # Public - Get artists according to certain parameters
+  #
+  # Example:
+  #   
+  def artists
+    # TODO - Get artists by name search
+    @artists = Artist.where(:birth => (params[:birth][0]..params[:birth][1]))
+    respond_to do |format|
+      format.json {render :json => @artists}
+      format.xml {render :xml => @artists}
+    end
+  end
+
   # Pending:
-  # get /artists with date params, search by name
   # get /artworks with params date, technique
+
 end

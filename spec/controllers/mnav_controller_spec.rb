@@ -135,4 +135,28 @@ describe MnavController do
     artist.artworks.create(:museum_id => rand(10), :title => "Super Mario Bros")
   end
 
+  describe "Get Artist queries with params" do
+    before do
+      Artist.create(:name => "Rafael", :museum_id => 1, :birth => 1930)
+      Artist.create(:name => "Fernando", :museum_id => 2, :birth => 1920)
+      Artist.create(:name => "Leonardo", :museum_id => 3, :birth => 1972)
+      Artist.create(:name => "Donatello", :museum_id => 4, :birth => 1984)
+      Artist.create(:name => "Michaelangelo", :museum_id => 5, :birth => 1916)
+      Artist.create(:name => "Ed", :museum_id => 6, :birth => 1992)
+      Artist.create(:name => "Alejandro", :museum_id => 7, :birth => 1935)
+    end
+
+    it "should get artists born between two dates" do
+      get :artists, :birth => [1900,1950], :format => :json
+      artists = JSON.parse(response.body)
+      artists.size.should eq(4)
+      artists.each do |artist|
+        artist['birth'].should be < 1950
+      end
+    end
+
+    it "should get artists whose names are similar to a search query" do
+      pending("get artists by name search")
+    end
+  end
 end
