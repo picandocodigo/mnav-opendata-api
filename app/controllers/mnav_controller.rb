@@ -45,10 +45,15 @@ class MnavController < ApplicationController
   # Public - Get artists according to certain parameters
   #
   # Example:
-  #   
+  #
   def artists
     # TODO - Get artists by name search
-    @artists = Artist.where(:birth => (params[:birth][0]..params[:birth][1]))
+    if params[:birth]
+      @artists = Artist.where(:birth => (params[:birth][0]..params[:birth][1]))
+    end
+    if params[:name]
+      @artists = Artist.where("name like ?", "%#{params[:name]}%")
+    end
     respond_to do |format|
       format.json {render :json => @artists}
       format.xml {render :xml => @artists}
@@ -57,5 +62,4 @@ class MnavController < ApplicationController
 
   # Pending:
   # get /artworks with params date, technique
-
 end

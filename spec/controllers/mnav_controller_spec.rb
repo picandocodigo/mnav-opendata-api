@@ -155,6 +155,14 @@ describe MnavController do
       end
     end
 
+    it "should get artists with name search" do
+      get :artists, :name => "and", :format => :json
+      artists = JSON.parse(response.body)
+      artists.size.should eq(2)
+      artists.each do |artist|
+        artist['name'].should match /and/
+      end
+    end
     it "should get artists whose names are similar to a search query" do
       pending("get artists by name search")
     end
