@@ -17,24 +17,22 @@ module ProcessData
   #
   # No return, logs errors in /log/data_processing_errors.log
   def self.process_artists(file = Rails.root.join('./public/data/artists.csv'))
-    begin
-      CSV.foreach(file, :col_sep => ';') do |row|
-        artist = Artist.create(
-          :museum_id => row[0],
-          :name => row[1],
-          :display_name => row[2],
-          :birth => row[3],
-          :death => row[4],
-          :biography => row[5]
-        )
-        if artist.errors
-          artist.errors.each do |field, msg|
-            log_error("[Artist] - museum id: #{artist.museum_id} - #{field} #{msg}")
-          end
+    file = File.open(file, "r") if file.respond_to?(:to_path)
+    CSV.new(file, :col_sep => ';').each do |row|
+      artist = Artist.create(
+        :museum_id => row[0],
+        :name => row[1],
+        :display_name => row[2],
+        :birth => row[3],
+        :death => row[4],
+        :biography => row[5]
+      )
+      if artist.errors.any?
+        artist.errors.each do |field, msg|
+          log_error("#{Time.now} [Artist] - museum id: #{artist.museum_id} - #{field} #{msg}")
+          log_error("#{Time.now} [Artist Data] #{row}")
         end
       end
-    rescue Exception
-      log_error "[Artist] Exception: #{$!} - museum_id: #{row[0]}"
     end
   end
 
@@ -48,22 +46,19 @@ module ProcessData
   #
   # No return, logs errors in /log/data_processing_errors.log
   def self.process_artworks(file = Rails.root.join('./public/data/artworks.csv'))
-    begin
-      CSV.foreach(file, :col_sep => ';') do |row|
-        artwork_data = {
-          :museum_id => row[0],
-          :museum_artist_id => row[1],
-          :title => row[2],
-          :year => row[3],
-          :technique => row[4],
-          :height => row[5],
-          :width => row[6],
-          :depth => row[7]
-        }
-        create_artwork(artwork_data)
-      end
-    rescue Exception
-      log_error "[Artwork] Exception: #{$!} - museum_id: #{row[0]}"
+    file = File.open(file, "r") if file.respond_to?(:to_path)
+    CSV.new(file, :col_sep => ';').each do |row|
+      artwork_data = {
+        :museum_id => row[0],
+        :museum_artist_id => row[1],
+        :title => row[2],
+        :year => row[3],
+        :technique => row[4],
+        :height => row[5],
+        :width => row[6],
+        :depth => row[7]
+      }
+      create_artwork(artwork_data)
     end
   end
 
@@ -74,6 +69,8 @@ module ProcessData
       process_artists(file)
     when "artwork"
       process_artworks(file)
+    else
+      raise ArgumentError, "Invalid type, must be artist or artwork"
     end
   end
 
@@ -83,17 +80,14 @@ module ProcessData
   # belong to an artist, but we can have orphan artworks too.
   #
   def self.create_artwork(artwork_data)
-    if artwork_data[:museum_artist_id].blank? || artwork_data[:museum_artist_id].empty? ||
-        artwork_data[:museum_artist_id].nil?
-      artwork = Artwork.create(artwork_data)
-    else
-      artist = Artist.where(:museum_id => artwork_data[:museum_artist_id]).first
-      artwork = artist.artworks.create(artwork_data)
-    end
+    artwork = Artwork.new(artwork_data)
+    artwork.artist = Artist.where(:museum_id => artwork_data[:museum_artist_id]).first
+    artwork.save
 
-    if artwork.errors
+    if artwork.errors.any?
       artwork.errors.each do |field, msg|
-        log_error("[Artwork] - museum id: #{artist_data[:museum_artist_id]} - #{field} #{msg}")
+        log_error("#{Time.now} [Artwork] - museum id: #{artist_data[:museum_artist_id]} - #{field} #{msg}")
+        log_error("#{Time.now} [Artwork Data] #{artwork_data}")
       end
     end
   end

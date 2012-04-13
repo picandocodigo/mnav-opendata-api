@@ -135,7 +135,7 @@ describe MnavController do
     artist.artworks.create(:museum_id => rand(10), :title => "Super Mario Bros")
   end
 
-  describe "Get Artist queries with params" do
+  describe "get artists with search params" do
     before do
       Artist.create(:name => "Rafael", :museum_id => 1, :birth => 1930)
       Artist.create(:name => "Fernando", :museum_id => 2, :birth => 1920)
@@ -163,8 +163,37 @@ describe MnavController do
         artist['name'].should match /and/
       end
     end
-    it "should get artists whose names are similar to a search query" do
-      pending("get artists by name search")
+
+  end
+
+  describe "get artworks with search params" do
+    before do
+      Artwork.create(:title => "Joust", :museum_id => 1, :technique => "Arcade", :year => 1982)
+      Artwork.create(:title => "1943", :museum_id => 2, :technique => "Arcade", :year => 1987)
+      Artwork.create(:title => "Qbert", :museum_id => 3, :technique => "Arcade", :year => 1982)
+      Artwork.create(:title => "Monkey Island", :museum_id => 4, :technique => "PC", :year => 1990)
+      Artwork.create(:title => "Tetris", :museum_id => 5, :technique => "Arcade")
+      Artwork.create(:title => "Golden Axe", :museum_id => 6, :technique => "Arcade")
+      Artwork.create(:title => "Street Fighter II", :museum_id => 7, :technique => "Arcade")
+      Artwork.create(:title => "River City Ransom", :museum_id => 8, :technique => "NES")
+      Artwork.create(:title => "Super Mario Kart", :museum_id => 9, :technique => "SNES", :year => 1992)
+      Artwork.create(:title => "River City Ransom", :museum_id => 10, :technique => "NES")
+      Artwork.create(:title => "River City Ransom", :museum_id => 11, :technique => "NES")
+    end
+
+    it "should get artworks with certain technique" do
+      get :artworks, :technique => "cade", :format => :json
+      artworks = JSON.parse(response.body)
+      artworks.size.should eq(6)
+      artworks.each do |artwork|
+        artwork['technique'].should match /cade/
+      end
+    end
+
+    it "should get artworks from a certain year" do
+      get :artworks, :year => 1982, :format => :json
+      artworks = JSON.parse(response.body)
+      artworks.size.should eq(2)
     end
   end
 end

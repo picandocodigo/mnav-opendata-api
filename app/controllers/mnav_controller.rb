@@ -10,10 +10,7 @@ class MnavController < ApplicationController
   #
   def artist
     @artist = Artist.find(params[:id])
-    respond_to do |format|
-      format.json {render :json => @artist}
-      format.xml {render :xml => @artist}
-    end
+    respond(@artist)
   end
 
   # Public - Get an artist's artworks
@@ -23,10 +20,7 @@ class MnavController < ApplicationController
   #
   def artist_artworks
     @artist = Artist.find(params[:id])
-    respond_to do |format|
-      format.json {render :json => @artist.artworks}
-      format.xml {render :xml => @artist.artworks}
-    end
+    respond(@artist)
   end
 
   # Public - Get artwork
@@ -36,30 +30,47 @@ class MnavController < ApplicationController
   #
   def artwork
     @artwork = Artwork.find(params[:id])
-    respond_to do |format|
-      format.json {render :json => @artwork}
-      format.xml {render :xml => @artwork}
-    end
+    respond(@artwork)
   end
 
-  # Public - Get artists according to certain parameters
+  # Public - Get artists according to search parameters
   #
   # Example:
   #
+  #   GET /artists?name="Alejandro"
+  #   GET /artists?date[]=1900&date[]=1950
+  #
   def artists
-    # TODO - Get artists by name search
     if params[:birth]
       @artists = Artist.where(:birth => (params[:birth][0]..params[:birth][1]))
     end
     if params[:name]
       @artists = Artist.where("name like ?", "%#{params[:name]}%")
     end
-    respond_to do |format|
-      format.json {render :json => @artists}
-      format.xml {render :xml => @artists}
+    respond(@artists)
+  end
+
+  # Public - Get Artworks according to search parameters
+  #
+  # Example
+  #
+  def artworks
+    if params[:year]
+      @artworks = Artwork.where(:year => params[:year])
     end
+    if params[:technique]
+      @artworks = Artwork.where("technique like ?", "%#{params[:technique]}%")
+    end
+    respond(@artworks)
   end
 
   # Pending:
   # get /artworks with params date, technique
+  def respond(elem)
+    respond_to do |format|
+      format.json {render :json => elem}
+      format.xml {render :xml => elem}
+    end
+  end
+
 end
