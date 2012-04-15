@@ -1,0 +1,7 @@
+artists:
+  url: http://www.mnav.gub.uy/artistas.csv
+  name: artists.csv
+
+artworks:
+  url: http://www.mnav.gub.uy/obras.csv
+  name: artworks.csv

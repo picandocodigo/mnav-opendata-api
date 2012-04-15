@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'process_data'
+require 'data/process_data'
 
 describe ProcessData do
 
