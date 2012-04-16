@@ -20,7 +20,7 @@ class MnavController < ApplicationController
   #
   def artist_artworks
     @artist = Artist.find(params[:id])
-    respond(@artist)
+    respond(@artist.artworks)
   end
 
   # Public - Get artwork
@@ -38,7 +38,7 @@ class MnavController < ApplicationController
   # Example:
   #
   #   GET /artists?name="Alejandro"
-  #   GET /artists?date[]=1900&date[]=1950
+  #   GET /artists?birth[]=1900&birth[]=1950
   #
   def artists
     if params[:birth]
@@ -56,7 +56,10 @@ class MnavController < ApplicationController
   #
   def artworks
     if params[:year]
-      @artworks = Artwork.where(:year => params[:year])
+      @artworks = params[:year].is_a?(Array) ?
+      Artwork.where(:year => (params[:year][0]..params[:year][1]))
+      :
+      Artwork.where(:year => params[:year])
     end
     if params[:technique]
       @artworks = Artwork.where("technique like ?", "%" + params[:technique] + "%")

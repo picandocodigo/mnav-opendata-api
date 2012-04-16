@@ -9,7 +9,7 @@ module ProcessData
 
   # Public - Save artists to the database from mnav's csv file
   #
-  # file - String, path to the csv file
+  # file - String, path to the csv file or IO
   #
   # Example
   #
@@ -38,7 +38,7 @@ module ProcessData
 
   # Public - Save artworks from MNAV's csv file
   #
-  # file - String, path to the csv file
+  # file - String, path to the csv file or IO
   #
   # Example
   #

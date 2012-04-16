@@ -195,5 +195,13 @@ describe MnavController do
       artworks = JSON.parse(response.body)
       artworks.size.should eq(2)
     end
+
+    it "should get artworks from a year range" do
+      get :artworks, :year => [1900, 1950], :format => :json
+      artworks = JSON.parse(response.body)
+      artworks.each do |artwork|
+        artwork['year'].should be_between(1900, 1950)
+      end
+    end
   end
 end
