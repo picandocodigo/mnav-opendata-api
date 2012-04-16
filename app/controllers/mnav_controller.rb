@@ -45,7 +45,7 @@ class MnavController < ApplicationController
       @artists = Artist.where(:birth => (params[:birth][0]..params[:birth][1]))
     end
     if params[:name]
-      @artists = Artist.where("name like ?", "%#{params[:name]}%")
+      @artists = Artist.where("name like ?", "%" + params[:name] + "%")
     end
     respond(@artists)
   end
@@ -59,13 +59,11 @@ class MnavController < ApplicationController
       @artworks = Artwork.where(:year => params[:year])
     end
     if params[:technique]
-      @artworks = Artwork.where("technique like ?", "%#{params[:technique]}%")
+      @artworks = Artwork.where("technique like ?", "%" + params[:technique] + "%")
     end
     respond(@artworks)
   end
 
-  # Pending:
-  # get /artworks with params date, technique
   def respond(elem)
     respond_to do |format|
       format.json {render :json => elem}
