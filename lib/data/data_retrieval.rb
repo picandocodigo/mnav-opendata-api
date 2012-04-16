@@ -4,7 +4,7 @@ require 'yaml'
 # Public - Prepare data for processing
 # This class retrieves data from the URL in data.yaml
 class DataRetrieval
-  # Public - Download files 
+  # Public - Download files
   #
   # Platform dependant - uses wget and depends on OS. It's simpler this way and
   # I'm already being platform dependant on the file conversion.

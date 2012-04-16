@@ -29,7 +29,7 @@ module ProcessData
       )
       if artist.errors.any?
         artist.errors.each do |field, msg|
-          log_error("#{Time.now} [Artist] - museum id: #{artist.museum_id} - #{field} #{msg}")
+          log_error("#{Time.now} [Artist] - #{field} #{msg}")
           log_error("#{Time.now} [Artist Data] #{row}")
         end
       end
@@ -86,7 +86,7 @@ module ProcessData
 
     if artwork.errors.any?
       artwork.errors.each do |field, msg|
-        log_error("#{Time.now} [Artwork] - museum id: #{artist_data[:museum_artist_id]} - #{field} #{msg}")
+        log_error("#{Time.now} [Artwork] - #{field} #{msg}")
         log_error("#{Time.now} [Artwork Data] #{artwork_data}")
       end
     end

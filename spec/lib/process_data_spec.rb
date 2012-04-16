@@ -28,6 +28,10 @@ describe ProcessData do
     StringIO.new("3;1;\"Flux Capacitor\";\"1984\";\"Pixels\";66;140;43\n")
   end
 
+  let :invalid_artwork_data do
+    StringIO.new(";")
+  end
+
   let :artworks_data do
     StringIO.new(<<-CSV.strip_heredoc)
       1;;"DeLorean";"1985";"Aluminium";231;123;;
@@ -87,6 +91,14 @@ describe ProcessData do
       expect {
         ProcessData.process("artist", invalid_artist_data)
       }.to_not change { Artist.count }
+    end
+  end
+
+  describe "Artwork invalid data processing" do
+    it "should not create artwork with invalid data" do
+      expect {
+        ProcessData.process("artwork", invalid_artwork_data)
+      }.to_not change {Artwork.count }
     end
   end
 
