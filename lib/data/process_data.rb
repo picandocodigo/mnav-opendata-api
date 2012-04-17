@@ -63,6 +63,13 @@ module ProcessData
   end
 
 
+  # Public - Wrapper for process_artists and process_artworks
+  #
+  # type - String, can be "artist" or "artwork"
+  #
+  # Example
+  #
+  #   ProcessData.process('artist', '~/data/artwork.csv')
   def self.process(type, file)
     case type
     when "artist"

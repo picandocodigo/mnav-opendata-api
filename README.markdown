@@ -4,7 +4,7 @@ MNAV - Museo Nacional de Artes Visuales provides [open data](http://www.mnav.gub
 
 This API includes the following functionality:
 
-* Retrieve MNAV's open data files (lib/data/data_retrieval.rb)
+* Retrieve MNAV's open data files
 * Process artists and artwork data and save them into the database
 * Provide this data in XML and JSON
 
