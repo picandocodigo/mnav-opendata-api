@@ -1,6 +1,6 @@
 # Public - Controller for incoming API requests.
 # Renders JSON and XML.
-class MnavController < ApplicationController
+class ArtistController < ApplicationController
 
   # Public - Get an artist info
   #
@@ -8,7 +8,7 @@ class MnavController < ApplicationController
   #
   #   GET /artist/:id
   #
-  def artist
+  def show
     @artist = Artist.find(params[:id])
     respond(@artist)
   end
@@ -23,15 +23,6 @@ class MnavController < ApplicationController
     respond(@artist.artworks)
   end
 
-  # Public - Get artwork
-  #
-  # Example:
-  #   GET /artwork/:id
-  #
-  def artwork
-    @artwork = Artwork.find(params[:id])
-    respond(@artwork)
-  end
 
   # Public - Get artists according to search parameters
   #
@@ -40,7 +31,7 @@ class MnavController < ApplicationController
   #   GET /artists?name="Alejandro"
   #   GET /artists?birth[]=1900&birth[]=1950
   #
-  def artists
+  def index
     if params[:birth]
       @artists = Artist.where(:birth => (params[:birth][0]..params[:birth][1]))
     end
@@ -48,30 +39,6 @@ class MnavController < ApplicationController
       @artists = Artist.where("name like ?", "%" + params[:name] + "%")
     end
     respond(@artists)
-  end
-
-  # Public - Get Artworks according to search parameters
-  #
-  # Example
-  #
-  def artworks
-    if params[:year]
-      @artworks = params[:year].is_a?(Array) ?
-      Artwork.where(:year => (params[:year][0]..params[:year][1]))
-      :
-      Artwork.where(:year => params[:year])
-    end
-    if params[:technique]
-      @artworks = Artwork.where("technique like ?", "%" + params[:technique] + "%")
-    end
-    respond(@artworks)
-  end
-
-  def respond(elem)
-    respond_to do |format|
-      format.json {render :json => elem}
-      format.xml {render :xml => elem}
-    end
   end
 
 end
