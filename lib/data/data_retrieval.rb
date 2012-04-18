@@ -7,8 +7,7 @@ require 'open-uri'
 class DataRetrieval
   # Public - Download files
   #
-  # Platform dependant - uses wget and depends on OS. It's simpler this way and
-  # I'm already being platform dependant on the file conversion.
+  # Downloads files and converts them from ISO-8859-1 to UTF-8
   def download_files
     @data = YAML::load_file(Rails.root.join('./lib/data/data.yaml'))
     @data.each do |data|
