@@ -75,7 +75,7 @@ or:
 
 ## Motivation
 
-One of the goals of this project is to demand more open data from this and other national museums, maybe even manage to get most of the museum's works processed. There are 137 works listed in the open data from about 4,000. There are 876 who have works in the MNAV museum, 918 in the open data, and about 1,500 relieved including from other museums. There is no centralized info on this, so every library, museum or art institute in Uruguay does this from scratch.
+One of the goals of this project is to demand more open data from this and other national museums, maybe even manage to get most of the museum's works processed. There are 137 works listed in the open data from about 4,000. There are 876 artists who have works in the MNAV museum, 914 in the open data, and about 1,500 relieved including from other museums. There is no centralized info on this, so every library, museum or art institute in Uruguay does this from scratch.
 
 There are pictures available for the works, but they have the museum's copyright. 
 They can be accessed via URL:
