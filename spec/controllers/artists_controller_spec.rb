@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'nokogiri'
 
-describe ArtistController do
+describe ArtistsController do
 
   describe "Artists JSON Responses" do
     before do
@@ -18,23 +18,6 @@ describe ArtistController do
       json_response.should have_key("name")
       json_response.should have_key("museum_id")
       json_response.should have_key("display_name")
-    end
-  end
-
-
-  describe "Artist Artworks JSON" do
-    before do
-      @artist = create_artist_with_artwork
-      get :artist_artworks, :id => @artist.id, :format => :json
-    end
-
-    it "should get a 200 OK response" do
-      response.response_code.should == 200
-    end
-
-    it "should get an artist artworks" do
-      json_response = JSON.parse(response.body)
-      json_response.should have_at_least(1).items
     end
   end
 
@@ -58,32 +41,6 @@ describe ArtistController do
       @xml.xpath("//name").should_not be nil
     end
 
-  end
-
-
-  describe "Artist Artworks XML" do
-    before do
-      @artist = create_artist
-      get :artist_artworks, :id => @artist.id, :format => :xml
-      @xml = Nokogiri::XML(response.body)
-    end
-
-    it "should get a 200 OK response" do
-      response.response_code.should == 200
-    end
-
-    it "should return XML" do
-      response.content_type.should eq("application/xml")
-    end
-
-
-    it "should get an artist artworks" do
-      @xml.xpath("//artwork").each do |artwork_node|
-        artwork_node.xpath("//title").should_not be nil
-        artwork_node.xpath("//id").should_not be nil
-        artwork_node.xpath("//museum_id").should_not be nil
-      end
-    end
   end
 
   def create_artist

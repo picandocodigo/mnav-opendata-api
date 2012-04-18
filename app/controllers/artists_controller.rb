@@ -1,6 +1,6 @@
 # Public - Controller for incoming API requests.
 # Renders JSON and XML.
-class ArtistController < ApplicationController
+class ArtistsController < ApplicationController
 
   # Public - Get an artist info
   #
@@ -12,17 +12,6 @@ class ArtistController < ApplicationController
     @artist = Artist.find(params[:id])
     respond(@artist)
   end
-
-  # Public - Get an artist's artworks
-  #
-  # Example:
-  #   GET /artist/:id/artworks
-  #
-  def artist_artworks
-    @artist = Artist.find(params[:id])
-    respond(@artist.artworks)
-  end
-
 
   # Public - Get artists according to search parameters
   #

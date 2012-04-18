@@ -1,9 +1,18 @@
 require 'spec_helper'
 
-describe ArtworkController do
+describe ArtworksController do
+
+  def create_artist
+    artist = Artist.create(:museum_id => rand(10), :name => "Shigeru Miyamoto")
+  end
 
   def create_artwork
     Artwork.create(:museum_id => rand(10), :title => "Super Mario Bros")
+  end
+
+  def create_artist_with_artwork
+    artist = create_artist
+    artist.artworks.create(:museum_id => rand(10), :title => "Super Mario Bros")
   end
 
   describe "Artworks JSON responses" do
@@ -82,4 +91,47 @@ describe ArtworkController do
       end
     end
   end
+
+  describe "Artist Artworks JSON" do
+    before do
+      @artist = create_artist_with_artwork
+      get :index, :artist_id => @artist.id, :format => :json
+    end
+
+    it "should get a 200 OK response" do
+      response.response_code.should == 200
+    end
+
+    it "should get an artist artworks" do
+      json_response = JSON.parse(response.body)
+      json_response.should have_at_least(1).items
+    end
+  end
+
+
+  describe "Artist Artworks XML" do
+    before do
+      @artist = create_artist
+      get :index, :artist_id => @artist.id, :format => :xml
+      @xml = Nokogiri::XML(response.body)
+    end
+
+    it "should get a 200 OK response" do
+      response.response_code.should == 200
+    end
+
+    it "should return XML" do
+      response.content_type.should eq("application/xml")
+    end
+
+
+    it "should get an artist artworks" do
+      @xml.xpath("//artwork").each do |artwork_node|
+        artwork_node.xpath("//title").should_not be nil
+        artwork_node.xpath("//id").should_not be nil
+        artwork_node.xpath("//museum_id").should_not be nil
+      end
+    end
+  end
+
 end
