@@ -9,17 +9,6 @@ class ArtworksController < ApplicationController
     respond(@artwork)
   end
 
-  # Public - Get an artist's artworks
-  #
-  # Example:
-  #   GET /artist/:id/artworks
-  #
-  def artist_artworks
-    @artist = Artist.find(params[:id])
-    respond(@artist.artworks)
-  end
-
-
   # Public - Get Artworks according to search parameters
   #
   # Example
