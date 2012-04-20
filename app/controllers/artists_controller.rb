@@ -1,4 +1,4 @@
-# Public - Controller for incoming API requests.
+# Public - Controller for Artists requests.
 # Renders JSON and XML.
 class ArtistsController < ApplicationController
 

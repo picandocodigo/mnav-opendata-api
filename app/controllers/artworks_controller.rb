@@ -1,3 +1,5 @@
+# Public - Controller for Artwors requests.
+# Renders JSON and XML.
 class ArtworksController < ApplicationController
   # Public - Get artwork
   #
