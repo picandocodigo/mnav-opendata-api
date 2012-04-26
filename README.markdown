@@ -8,34 +8,23 @@ This API includes the following functionality:
 * Process artists and artwork data and save them into the database
 * Provide this data in XML and JSON
 
-## Retrieving MNAV's data
+## Retrieving and processing MNAV's data
 
-MNAV provides it's data in CSV format. You can run the data_retrieval.rb class in lib/data via command line:
+MNAV provides it's data in CSV format. There are a few rake tasks on /lib/task/download_files.rake that you can execute to process the information:
 
-`./data_retrieval.rb`
+`rake download_files`
 
-The url and name for the files are set in lib/data/data.yaml. The script uses wget to download them and iconv to convert them from ISO-8859-1 to UTF-8.
+Downloads the csv files from the museum's website.
 
-## Process data
+`rake process_artists`
 
-The ProcessData module saves the information in the database. There's two main methods:
+Saves the artists' information in the database.
 
-**process_artists(file)**
+`rake process_artworks`
 
-The file parameter can be a String with a path to a csv file, or an IO Object (StringIO). Eg.:
-`ProcessData.process_artists('~/data/artists.csv')`
+Saves the artworks' information in the database.
 
-**process_artworks(file)**
-
-Same params as process_artists.
-
-There's a wrapper for these two methods:
-
-**process(type, file)**
-
-The type parameter must be a String, either "artist" or "artwork". The file parameter is the same as before. Example:
-`ProcessData.process('artist', '~/data/artwork.csv')`
-
+The url and name for the files are set in lib/data/data.yaml. The csv files are in ISO-8859-1 (latin-1) so they'r transformed to UTF-8 in the process.
 
 ## Using the API
 Once you've processed the data and run your app, you can query the API for artists and artworks. Default format is JSON, but you can get XML by specifying it in the request
@@ -84,5 +73,6 @@ The museum holds the copyright (of the pictures, not the work) and each picture 
 
 ## Copyright
 
-Author: Fernando Briano
+Author: [Fernando Briano](http://picandocodigo.net)
+
 Development sponsored by [Cubox](http://cuboxlabs.com)
