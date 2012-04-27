@@ -24,10 +24,10 @@ Saves the artists' information in the database.
 
 Saves the artworks' information in the database.
 
-The url and name for the files are set in lib/data/data.yaml. The csv files are in ISO-8859-1 (latin-1) so they'r transformed to UTF-8 in the process.
+The url and name for the files are set in lib/data/data.yaml. The csv files are in ISO-8859-1 (latin-1) so they're transformed to UTF-8 in the process.
 
 ## Using the API
-Once you've processed the data and run your app, you can query the API for artists and artworks. Default format is JSON, but you can get XML by specifying it in the request
+Once you've processed the data and run your app, you can query the API for artists and artworks. Default format is JSON, but you can get XML by specifying it in the request. You can see [here](https://github.com/picandocodigo/mnav-opendata-front-end) for an example application using this API.
 
 ### Artists
 
