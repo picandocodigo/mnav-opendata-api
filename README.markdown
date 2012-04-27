@@ -24,6 +24,10 @@ Saves the artists' information in the database.
 
 Saves the artworks' information in the database.
 
+`rake check_updates`
+
+Checks if the files have been updated on the MNAV website and should be downloaded again.
+
 The url and name for the files are set in lib/data/data.yaml. The csv files are in ISO-8859-1 (latin-1) so they're transformed to UTF-8 in the process.
 
 ## Using the API

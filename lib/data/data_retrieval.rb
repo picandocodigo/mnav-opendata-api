@@ -39,11 +39,11 @@ module DataRetrieval
 
   def self.download(entity)
     entity[1]['file'] = entity[1]['url'].match(/\w*\.csv/).to_s
-    data_path = Rails.root.join("./public/data/#{entity[1]['file']}")
+    data_path = Rails.root.join("./public/data/#{entity[1]['name']}")
     file = File.new("#{data_path}", "w+:utf-8")
 
     open(entity[1]['url'], "r:iso-8859-1") do |f|
-      file.write(f.read)
+      file.write(f.read.gsub( /\r\n/m, "\n" ))
       self.update_last_modified(entity[0], f.last_modified)
     end
   end
@@ -55,7 +55,6 @@ module DataRetrieval
   # Internal - update last modified date on config file
   def self.update_last_modified(entity, last_modified)
     yaml = self.load_data
-    require 'debugger'; debugger
     yaml[entity]['last_modified'] = Date.parse(last_modified.strftime('%Y/%m/%d'))
     File.open(Rails.root.join('./lib/data/data.yaml'), 'w') do |f|
       f.write(yaml.to_yaml)
