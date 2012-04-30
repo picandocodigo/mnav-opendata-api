@@ -14,15 +14,7 @@ MNAV provides it's data in CSV format. There are a few rake tasks on /lib/task/d
 
 `rake download_files`
 
-Downloads the csv files from the museum's website.
-
-`rake process_artists`
-
-Saves the artists' information in the database.
-
-`rake process_artworks`
-
-Saves the artworks' information in the database.
+Downloads the csv files from the museum's website. Processes artists and artworks, saves them in the database.
 
 `rake check_updates`
 

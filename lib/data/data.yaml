@@ -2,8 +2,8 @@
 artists:
   url: http://www.mnav.gub.uy/artistas.csv
   name: artists.csv
-  last_modified: 2012-03-28
+  last_modified: 2012/04/30
 artworks:
   url: http://www.mnav.gub.uy/obras.csv
   name: artworks.csv
-  last_modified: 2011-07-26
+  last_modified: 2012/04/30
