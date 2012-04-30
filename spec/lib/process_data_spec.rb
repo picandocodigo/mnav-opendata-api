@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'data/process_data'
+require 'process_data'
 
-describe ProcessData do
+describe Data::ProcessData do
 
   let :artist_data do
     StringIO.new("1;\"Brown, Emmet\";\"Emmet Brown\";1943;;\n")
@@ -41,12 +41,12 @@ describe ProcessData do
   end
 
   it "can't process something that isn't an artist or an artwork" do
-    expect { ProcessData.process("lettuce", double) }.to raise_error(ArgumentError)
+    expect { Data::ProcessData.process("lettuce", double) }.to raise_error(ArgumentError)
   end
 
   describe 'Artist valid data processing' do
     it 'should create an artist' do
-      ProcessData.process("artist", artist_data)
+      Data::ProcessData.process("artists", artist_data)
       artist = Artist.last
       artist.name.should eq("Brown, Emmet")
       artist.display_name.should eq("Emmet Brown")
@@ -54,14 +54,14 @@ describe ProcessData do
 
     it 'should create several artists' do
       expect {
-        ProcessData.process("artist", artists_data)
+        Data::ProcessData.process("artists", artists_data)
       }.to change { Artist.count }.by(line_count(artists_data))
     end
   end
 
   describe 'Artwork valid data processing' do
     it 'should create an artwork' do
-      ProcessData.process("artwork", artwork_data)
+      Data::ProcessData.process("artworks", artwork_data)
       artwork = Artwork.last
       artwork.title.should eq("El esgrimista")
       artwork.museum_id.should eq(7)
@@ -69,8 +69,8 @@ describe ProcessData do
     end
 
     it 'should create an artwork for an artist' do
-      ProcessData.process("artist", artist_data)
-      ProcessData.process("artwork", artwork_with_artist_data)
+      Data::ProcessData.process("artists", artist_data)
+      Data::ProcessData.process("artworks", artwork_with_artist_data)
       artwork = Artwork.last
       artwork.title.should eq("Flux Capacitor")
       artwork.museum_id.should eq(3)
@@ -78,9 +78,9 @@ describe ProcessData do
     end
 
     it 'should create severl artworks' do
-      ProcessData.process("artist", artist_data)
+      Data::ProcessData.process("artists", artist_data)
       expect {
-        ProcessData.process("artwork", artworks_data)
+        Data::ProcessData.process("artworks", artworks_data)
       }.to change { Artwork.count }.by(line_count(artworks_data))
       Artwork.all.map(&:title).should =~ ["DeLorean", "Mr Fusion", "Flux Capacitor"]
     end
@@ -89,7 +89,7 @@ describe ProcessData do
   describe "Artist invalid data processing" do
     it "should not create an artist with invalid data" do
       expect {
-        ProcessData.process("artist", invalid_artist_data)
+        Data::ProcessData.process("artists", invalid_artist_data)
       }.to_not change { Artist.count }
     end
   end
@@ -97,7 +97,7 @@ describe ProcessData do
   describe "Artwork invalid data processing" do
     it "should not create artwork with invalid data" do
       expect {
-        ProcessData.process("artwork", invalid_artwork_data)
+        Data::ProcessData.process("artworks", invalid_artwork_data)
       }.to_not change {Artwork.count }
     end
   end
