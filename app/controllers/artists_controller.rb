@@ -26,7 +26,7 @@ class ArtistsController < ApplicationController
     end
     if params[:name]
       @artists = Artist.where("lower(name) LIKE :name",
-                              {:name => "%" + params[:name] + "%"}
+                              {:name => "%" + params[:name].downcase + "%"}
                               )
     end
     respond(@artists)
