@@ -16,7 +16,7 @@ class Data
     # Downloads files and converts them from ISO-8859-1 to UTF-8
     #
     def self.download_files(entity = nil)
-      config = entity ? {entity[0] => entity[1]} : self.load_data_yaml
+      config = entity ? entity : self.load_data_yaml
       config.each do |entity|
         file = self.download(entity[1]['url'])
         entity[1]['last_modified'] = DateTime.now.strftime("%Y/%m/%d")
