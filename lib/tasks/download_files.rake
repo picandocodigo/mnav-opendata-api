@@ -12,6 +12,7 @@ end
 
 desc "Download artworks"
 task :download_artworks => :environment do
+<<<<<<< HEAD
   data = YAML::load_file(Rails.root.join('./lib/data/data.yaml'))
   entity = data['artworks']
   Data::DataRetrieval.download_files({"artworks" => entity})
