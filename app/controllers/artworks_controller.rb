@@ -27,7 +27,9 @@ class ArtworksController < ApplicationController
                   end
     end
     if params[:technique]
-      @artworks = Artwork.where("technique like ?", "%" + params[:technique] + "%")
+      @artworks = Artwork.where("lower(technique) LIKE :technique",
+                                {:technique => "%" + params[:technique].downcase + "%"}
+                                )
     end
     respond(@artworks)
   end
