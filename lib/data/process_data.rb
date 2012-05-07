@@ -62,7 +62,9 @@ class Data
           :technique => row[4],
           :height => row[5],
           :width => row[6],
-          :depth => row[7]
+          :depth => row[7],
+          :image_url => "http://www.mnav.gub.uy/obras/mnavXX#{row[0]}.jpg",
+          :image_thumbnail_url => "http://www.mnav.gub.uy/obras/mnav#{row[0]}.jpg"
         }
         create_artwork(artwork_data)
       end
