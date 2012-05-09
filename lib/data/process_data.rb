@@ -28,7 +28,8 @@ class Data
                         :display_name => row[2],
                         :birth => row[3],
                         :death => row[4],
-                        :biography => row[5]
+                        :biography => row[5],
+                        :artworks_count => 0
                         )
         if artist.errors.any?
           artist.errors.each do |field, msg|
@@ -101,7 +102,13 @@ class Data
     def self.create_artwork(artwork_data)
       artwork = Artwork.new(artwork_data)
       artwork.artist = Artist.where(:museum_id => artwork_data[:museum_artist_id]).first
+
       artwork.save
+
+      if artwork.artist
+        artwork.artist.artworks_count += 1
+        artwork.artist.save
+      end
 
       if artwork.errors.any?
         artwork.errors.each do |field, msg|

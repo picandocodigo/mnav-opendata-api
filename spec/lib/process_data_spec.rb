@@ -77,7 +77,14 @@ describe Data::ProcessData do
       artwork.technique.should eq("Pixels")
     end
 
-    it 'should create severl artworks' do
+    it 'should add 1 to artist_artwork_count' do
+      Data::ProcessData.process("artists", artist_data)
+      Data::ProcessData.process("artworks", artwork_with_artist_data)
+      artist = Artist.last
+      artist.artworks_count.should eq(1)
+    end
+
+    it 'should create several artworks' do
       Data::ProcessData.process("artists", artist_data)
       expect {
         Data::ProcessData.process("artworks", artworks_data)

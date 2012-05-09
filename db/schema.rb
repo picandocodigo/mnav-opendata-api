@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507202428) do
+ActiveRecord::Schema.define(:version => 20120509174056) do
 
   create_table "artists", :force => true do |t|
     t.integer  "museum_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20120507202428) do
     t.text     "biography"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "artworks_count"
   end
 
   create_table "artworks", :force => true do |t|
