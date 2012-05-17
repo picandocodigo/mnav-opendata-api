@@ -32,4 +32,10 @@ class ArtistsController < ApplicationController
     respond(@artists)
   end
 
+  def top_artists
+    limit = params[:limit] ? params[:limit].to_i - 1 : 5
+    @artists = Artist.find(:all, :order => "artworks_count DESC")[0..limit]
+    respond(@artists)
+  end
+
 end
