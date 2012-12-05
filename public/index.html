@@ -1,94 +1,91 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MNAV Open Data API</title>
+    <title>MNAV API de datos abiertos</title>
   </head>
   <body>
-		<h1>
-			<a name="museum-api" class="anchor" href="#museum-api"></a>Museum API</h1>
-<a href="https://github.com/picandocodigo/mnav-opendata-api"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/camo.github.com/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
-		<p>MNAV - Museo Nacional de Artes Visuales provides <a href="http://www.mnav.gub.uy/cms.php?id=datosabiertos">open data</a> on its artists and works. They are related (a work belongs_to an artist) with an internal id and the data is provided in CSV format.</p>
+		<h1><a name="museum-api" class="anchor" href="#museum-api"></a>Museum API</h1>
+    <a href="https://github.com/picandocodigo/mnav-opendata-api"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/camo.github.com/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+		<p>MNAV - Museo Nacional de Artes Visuales provee <a href="http://www.mnav.gub.uy/cms.php?id=datosabiertos">datos abiertos</a> de sus artistas y obras. Est&aacute;n relacionados (una obra pertenece a un artista) con un id interno y los datos se proveen en formato CSV.</p>
 
-		<p>This API includes the following functionality:</p>
+		<p>Esta API incluye la siguiente funcionalidad:</p>
 
 		<ul>
-			<li>Retrieve MNAV's open data files</li>
-			<li>Process artists and artwork data and save them into the database</li>
-			<li>Provide this data in XML and JSON</li>
-		</ul><h2>
-			<a name="retrieving-and-processing-mnavs-data" class="anchor" href="#retrieving-and-processing-mnavs-data"></a>Retrieving and processing MNAV's data</h2>
+			<li>Obtener los archivos de datos abiertos del MNAV</li>
+			<li>Procesar informaci&oacute;n de artistas y obras y guardarlos en la base de datos.</li>
+			<li>Proveer esta informaci&oacute;n en XML y JSON</li>
+		</ul>
 
-		<p>MNAV provides it's data in CSV format. There are a few rake tasks on /lib/task/download_files.rake that you can execute to process the information:</p>
+    <h2><a name="using-the-api" class="anchor" href="#using-the-api"></a>Uso de la API</h2>
 
-		<p><code>rake download_files</code></p>
-
-		<p>Downloads the csv files from the museum's website.</p>
-
-		<p><code>rake process_artists</code></p>
-
-		<p>Saves the artists' information in the database.</p>
-
-		<p><code>rake process_artworks</code></p>
-
-		<p>Saves the artworks' information in the database.</p>
-
-		<p>The url and name for the files are set in lib/data/data.yaml. The csv files are in ISO-8859-1 (latin-1) so they're transformed to UTF-8 in the process.</p>
-
-		<h2>
-			<a name="using-the-api" class="anchor" href="#using-the-api"></a>Using the API</h2>
-
-		<p>Once you've processed the data and run your app, you can query the API for artists and artworks. Default format is JSON, but you can get XML by specifying it in the request. You can see <a href="https://github.com/picandocodigo/mnav-opendata-front-end">here</a> for an example application using this API.</p>
+		<p>Puedes consultar la API por artistas y obras. El formato por defecto es JSON, pero se puede especificar el formato XML en el request para obtener datos XML. Pueden ver una aplicaci&oacute;n de ejemplo de uso de la API <a href="http://mnavf.heroku.com">en este enlace</a>.</p>
 
 		<h3>
-			<a name="artists" class="anchor" href="#artists"></a>Artists</h3>
+			<a name="artists" class="anchor" href="#artists"></a>Artistas</h3>
 
 		<p><code>GET /artist/:id</code>
-			Gets an artist's information.</p>
+			Obtiene la informaci&oacute;n de un artista.</p>
 
 		<p><code>GET /artist/:id/artworks</code>
-			Get an artist's artwork.</p>
+			Obtiene la obra de un artista dado.</p>
 
 		<p><code>GET /artists</code>
-			This route receives one of two parameters to search for artists:</p>
+			Esta ruta recibe dos par&aacute;metros para buscar artistas:</p>
 
 		<p><em>name</em> - String
 			<code>GET /artists?name=Juan</code></p>
 
-		<p><em>birth</em> - Integer, year range of an artist's birth year
+		<p><em>birth</em> - Integer (entero), rango de a&ntilde;os del nacimiento de un artista
 			<code>GET /artists?birth[]=1900&amp;birth[]=1950</code></p>
 
 		<h3>
-			<a name="artworks" class="anchor" href="#artworks"></a>Artworks</h3>
+			<a name="artworks" class="anchor" href="#artworks"></a>Obras</h3>
 
 		<p><code>GET /artwork/:id</code>
-			Gets an artwork's information</p>
+			Obtiene la informaci&oacute;n de una obra.</p>
 
 		<p><code>GET /artworks</code>
-			Also receives two parameters:</p>
+			Tambi&eacute;n recibe dos par&aacute;metros:</p>
 
-		<p><em>technique</em> - String, search artworks by technique
+		<p><em>technique</em> - String, busca obras por t&eacute;cnica
 			<code>GET /artworks?technique=oleo</code></p>
 
-		<p><em>year</em> - Can be Integer or an Array of integers.
+		<p><em>year</em> - Puede ser entero o un Array de enteros.
 			<code>GET /artworks?year=1950</code>
-			or:
+			&oacute;:
 			<code>GET /artworks?year[]=1900&amp;year[]=1950</code></p>
 
-		<h2>
-			<a name="motivation" class="anchor" href="#motivation"></a>Motivation</h2>
+    <h2>
+			<a name="retrieving-and-processing-mnavs-data" class="anchor" href="#retrieving-and-processing-mnavs-data"></a>Obtener y procesar los datos del MNAV</h2>
 
-		<p>One of the goals of this project is to demand more open data from this and other national museums, maybe even manage to get most of the museum's works processed. There are 137 works listed in the open data from about 4,000. There are 876 artists who have works in the MNAV museum, 914 in the open data, and about 1,500 relieved including from other museums. There is no centralized info on this, so every library, museum or art institute in Uruguay does this from scratch.</p>
+		<p>MNAV provee los datos en formato CSV. Hay algunas tareas rake on /lib/task/download_files.rake que se pueden ejecutar para procesar la información:</p>
 
-		<p>There are pictures available for the works, but they have the museum's copyright. 
-			They can be accessed via URL:
-			<code>http://www.mnav.gub.uy/obras/mnavXX[WORK_ID].jpg</code>
-			The museum holds the copyright (of the pictures, not the work) and each picture has a watermark. When used for publications or catalogs, the museum requests a donation (a computer or similar for the museum).</p>
+		<p><code>rake download_files</code></p>
 
-		<h2>
-			<a name="copyright" class="anchor" href="#copyright"></a>Copyright</h2>
+		<p>Descarga los archivos csv del sitio web del museo.</p>
 
-		<p>Author: <a href="http://picandocodigo.net">Fernando Briano</a></p>
+		<p><code>rake process_artists</code></p>
 
-		<p>Development sponsored by <a href="http://cuboxlabs.com">Cubox</a>
+		<p>Guarda la informaci&oacute;n de los artistas en la base de datos.</p>
+
+		<p><code>rake process_artworks</code></p>
+
+		<p>Guarda la informaci&oacute;n de las obras en la base de datos.</p>
+
+		<p>La url y nombre de los archivos se encuentra configurada en lib/data/data.yaml. Los archivos csv están codificados en ISO-8859-1 (latin-1) as&ieacute; que se transforman a UTF-8 en el proceso.</p>
+
+    <h2><a name="motivation" class="anchor" href="#motivation"></a>Motivaci&oacute;n</h2>
+
+		<p>Una de las metas de este proyecto es demandar m&aacute;s datos abiertos de este y otros museos nacionales, tal vez incluso lograr procesar las obras de la mayor&iacute;a de los museos. Hay 137 obras listadas en los datos abiertos de aproximadamente 4.000. Hay 876 artistas que tienen obras en el museo MNAV, 914 en los datos abiertos, y aproximadamente 1.500 relevados incluyendo de otros museos. No hay informaci&oacute;n centralizada sobre esto, por lo que cada biblioteca, museo o instituto de arte en Uruguay hace esto desde cero.</p>
+
+		<p>Hay fotos disponibles para algunas de las obras, pero tienen el derecho de autor del museo. Puede accederse mediante la siguiente URL:
+			<p><code>http://www.mnav.gub.uy/obras/mnavXX[WORK_ID].jpg</code></p>
+			<p>El museo tiene los derechos de autor (de las foros, no las obras) y cada imagen cuenta con una marca de agua. Cuando son usadas para publicaciones o cat&aacute;logos, el museo pide una donaci&oacute;n a cambio (una computadora o similar para el museo).</p>
+
+		<h2><a name="copyright" class="anchor" href="#copyright"></a>Copyright</h2>
+
+		<p>Autor: <a href="http://picandocodigo.net">Fernando Briano</a></p>
+
+		<p>Desarrollo esponsorizado por <a href="http://cuboxlabs.com">Cubox</a>
   </body>
 </html>
