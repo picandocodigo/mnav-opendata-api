@@ -27,10 +27,10 @@ Once you've processed the data and run your app, you can query the API for artis
 
 ### Artists
 
-`GET /artist/:id`
+`GET /artists/:id`
 Gets an artist's information.
 
-`GET /artist/:id/artworks`
+`GET /artists/:id/artworks`
 Get an artist's artwork.
 
 `GET /artists`
@@ -44,7 +44,7 @@ This route receives one of two parameters to search for artists:
 
 ### Artworks
 
-`GET /artwork/:id`
+`GET /artworks/:id`
 Gets an artwork's information
 
 `GET /artworks`
