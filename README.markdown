@@ -1,6 +1,12 @@
 # Museum API
 
-MNAV - Museo Nacional de Artes Visuales provides [open data](http://www.mnav.gub.uy/cms.php?id=datosabiertos) on its artists and works. They are related (a work belongs_to an artist) with an internal id and the data is provided in CSV format.
+You can see the API working on:  
+http://mnav.heroku.com
+
+There's an example application using the API here:  
+http://mnavf.heroku.com
+
+**MNAV - Museo Nacional de Artes Visuales** provides [open data](http://www.mnav.gub.uy/cms.php?id=datosabiertos) on its artists and works. They are related (a work belongs_to an artist) with an internal id and the data is provided in CSV format.
 
 This API includes the following functionality:
 
@@ -23,40 +29,29 @@ Checks if the files have been updated on the MNAV website and should be download
 The url and name for the files are set in lib/data/data.yaml. The csv files are in ISO-8859-1 (latin-1) so they're transformed to UTF-8 in the process.
 
 ## Using the API
-Once you've processed the data and run your app, you can query the API for artists and artworks. Default format is JSON, but you can get XML by specifying it in the request. You can see [here](https://github.com/picandocodigo/mnav-opendata-front-end) for an example application using this API.
+Once you've processed the data and ran your app, you can query the API for artists and artworks. Default format is JSON, but you can get XML by specifying it in the request.
 
 ### Artists
 
-`GET /artists/:id`
-Gets an artist's information.
-
-`GET /artists/:id/artworks`
-Get an artist's artwork.
-
-`GET /artists`
-This route receives one of two parameters to search for artists:
-
-*name* - String
-`GET /artists?name=Juan`
-
-*birth* - Integer, year range of an artist's birth year
-`GET /artists?birth[]=1900&birth[]=1950`
+  * `GET /artists/:id` - Gets an artist's information  
+  http://mnav.heroku.com/artists/323
+  * `GET /artists/:id/artworks` - Get an artist's artwork  
+  http://mnav.heroku.com/artists/323/artworks
+  * `GET /artists` - This route receives one of two parameters to search for artists:
+    * *name* - String: `GET /artists?name=Juan`
+    * *birth* - Integer, year range of an artist's birth year: `GET /artists?birth[]=1900&birth[]=1950`
 
 ### Artworks
 
-`GET /artworks/:id`
-Gets an artwork's information
+  * `GET /artworks/:id` - Gets an artwork's information  
+  http://mnav.heroku.com/artworks/62
+  * `GET /artworks` - Also receives two parameters:
+    * *technique* - String, search artworks by technique: `GET /artworks?technique=oleo`
+    * *year* - Can be Integer or an Array of integers:
+      * `GET /artworks?year=1950`
+      * `GET /artworks?year[]=1900&year[]=1950`
 
-`GET /artworks`
-Also receives two parameters:
-
-*technique* - String, search artworks by technique
-`GET /artworks?technique=oleo`
-
-*year* - Can be Integer or an Array of integers.
-`GET /artworks?year=1950`
-or:
-`GET /artworks?year[]=1900&year[]=1950`
+You can check an example application using the API [here](https://github.com/picandocodigo/mnav-opendata-front-end).
 
 ## Motivation
 
