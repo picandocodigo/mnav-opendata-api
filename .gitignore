@@ -27,3 +27,5 @@ spec/lib/*.csv
 
 #Coverage
 coverage
+
+.env

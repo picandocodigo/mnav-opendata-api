@@ -1,6 +1,8 @@
 source 'http://rubygems.org'
+ruby '2.1.4'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2'
+gem 'unicorn'
 
 group :test do
   # Pretty printed test output
@@ -12,9 +14,7 @@ group :test do
 end
 
 group :development do
-  gem 'rspec-rails'
-  gem 'nyan-cat-formatter'
-  gem 'debugger'
+  gem 'byebug'
   gem 'sqlite3'
 end
 

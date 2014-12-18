@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Artwork do
   describe "save artwork" do
@@ -13,7 +13,7 @@ describe Artwork do
     it "should save a valid artwork without artist" do
       museum_id = 1
       artwork = Artwork.create(:title => "", :museum_id => museum_id)
-      artwork.persisted?.should be false
+      expect(artwork.persisted?).to be false
     end
 
     it "should not save an invalid artwork" do

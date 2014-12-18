@@ -1,8 +1,9 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'nokogiri'
 require 'controllers_spec_helper'
 
-describe ArtistsController do
+
+RSpec.describe ArtistsController, :type => :controller do
   include ControllersSpecHelper
 
   describe "Artists JSON Responses" do
@@ -12,14 +13,14 @@ describe ArtistsController do
     end
 
     it "should get a 200 OK response" do
-      response.response_code.should == 200
+      expect(response).to have_http_status(200)
     end
 
     it "should get an artist and have certain structure" do
       json_response = JSON.parse(response.body)
-      json_response.should have_key("name")
-      json_response.should have_key("museum_id")
-      json_response.should have_key("display_name")
+      expect(json_response).to have_key("name")
+      expect(json_response).to have_key("museum_id")
+      expect(json_response).to have_key("display_name")
     end
   end
 
@@ -31,16 +32,16 @@ describe ArtistsController do
     end
 
     it "should get a 200 OK response" do
-      response.response_code.should == 200
+      expect(response).to have_http_status(200)
     end
 
     it "should return XML" do
-      response.content_type.should eq("application/xml")
+      expect(response.content_type).to eq("application/xml")
     end
 
     it "should get an artist and have certain structure" do
-      @xml.xpath("//id").inner_text.should eq(@artist.id.to_s)
-      @xml.xpath("//name").should_not be nil
+      expect(@xml.xpath("//id").inner_text).to eq(@artist.id.to_s)
+      expect(@xml.xpath("//name")).to_not be nil
     end
 
   end
@@ -59,18 +60,18 @@ describe ArtistsController do
     it "should get artists born between two dates" do
       get :index, :birth => [1900,1950], :format => :json
       artists = JSON.parse(response.body)
-      artists.size.should eq(4)
+      expect(artists.size).to eq(4)
       artists.each do |artist|
-        artist['birth'].should be < 1950
+        expect(artist['birth']).to be < 1950
       end
     end
 
     it "should get artists with name search" do
       get :index, :name => "and", :format => :json
       artists = JSON.parse(response.body)
-      artists.size.should eq(2)
+      expect(artists.size).to eq(2)
       artists.each do |artist|
-        artist['name'].should match /and/
+        expect(artist['name']).to match /and/
       end
     end
 

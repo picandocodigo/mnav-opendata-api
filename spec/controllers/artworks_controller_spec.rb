@@ -1,7 +1,7 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'controllers_spec_helper'
 
-describe ArtworksController do
+RSpec.describe ArtworksController, type: :controller do
   include ControllersSpecHelper
 
   describe "Artworks JSON responses" do
@@ -9,15 +9,16 @@ describe ArtworksController do
       @artwork = create_artwork
       get :show, :id => @artwork.id, :format => :json
     end
+
     it "should get a 200 OK response" do
-      response.response_code.should == 200
+      expect(response).to have_http_status(200)
     end
 
     it "should get an artwork and have certain structure" do
       json_response = JSON.parse(response.body)
-      json_response.should have_key("title")
-      json_response.should have_key("museum_id")
-      json_response.should have_key("museum_artist_id")
+      expect(json_response).to have_key("title")
+      expect(json_response).to have_key("museum_id")
+      expect(json_response).to have_key("museum_artist_id")
     end
   end
 
@@ -29,16 +30,16 @@ describe ArtworksController do
     end
 
     it "should get a 200 OK response" do
-      response.response_code.should == 200
+      expect(response).to have_http_status(200)
     end
 
     it "should return XML" do
-      response.content_type.should eq("application/xml")
+      expect(response.content_type).to eq("application/xml")
     end
 
     it "should get an artwork and have certain structure" do
-      @xml.xpath("//id").inner_text.should eq(@artwork.id.to_s)
-      @xml.xpath("//title").should_not be nil
+      expect(@xml.xpath("//id").inner_text).to eq(@artwork.id.to_s)
+      expect(@xml.xpath("//title")).not_to be nil
     end
   end
 
@@ -60,23 +61,23 @@ describe ArtworksController do
     it "should get artworks with certain technique" do
       get :index, :technique => "cade", :format => :json
       artworks = JSON.parse(response.body)
-      artworks.size.should eq(6)
+      expect(artworks.size).to eq(6)
       artworks.each do |artwork|
-        artwork['technique'].should match /cade/
+        expect(artwork['technique']).to match /cade/
       end
     end
 
     it "should get artworks from a certain year" do
       get :index, :year => 1982, :format => :json
       artworks = JSON.parse(response.body)
-      artworks.size.should eq(2)
+      expect(artworks.size).to eq(2)
     end
 
     it "should get artworks from a year range" do
       get :index, :year => [1900, 1950], :format => :json
       artworks = JSON.parse(response.body)
       artworks.each do |artwork|
-        artwork['year'].should be_between(1900, 1950)
+        expect(artwork['year']).to be_between(1900, 1950)
       end
     end
   end
@@ -88,12 +89,12 @@ describe ArtworksController do
     end
 
     it "should get a 200 OK response" do
-      response.response_code.should == 200
+      expect(response).to have_http_status(200)
     end
 
     it "should get an artist artworks" do
       json_response = JSON.parse(response.body)
-      json_response.should have_at_least(1).items
+      expect(json_response.count).to be > 0
     end
   end
 
@@ -106,19 +107,19 @@ describe ArtworksController do
     end
 
     it "should get a 200 OK response" do
-      response.response_code.should == 200
+      expect(response).to have_http_status(200)
     end
 
     it "should return XML" do
-      response.content_type.should eq("application/xml")
+      expect(response.content_type).to eq("application/xml")
     end
 
 
     it "should get an artist artworks" do
       @xml.xpath("//artwork").each do |artwork_node|
-        artwork_node.xpath("//title").should_not be nil
-        artwork_node.xpath("//id").should_not be nil
-        artwork_node.xpath("//museum_id").should_not be nil
+        expect(artwork_node.xpath("//title")).to_not be nil
+        expect(artwork_node.xpath("//id")).to_not be nil
+        expect(artwork_node.xpath("//museum_id")).to_not be nil
       end
     end
   end

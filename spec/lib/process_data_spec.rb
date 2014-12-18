@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'process_data'
 
 describe Data::ProcessData do
@@ -48,8 +48,8 @@ describe Data::ProcessData do
     it 'should create an artist' do
       Data::ProcessData.process("artists", artist_data)
       artist = Artist.last
-      artist.name.should eq("Brown, Emmet")
-      artist.display_name.should eq("Emmet Brown")
+      expect(artist.name).to eq("Brown, Emmet")
+      expect(artist.display_name).to eq("Emmet Brown")
     end
 
     it 'should create several artists' do
@@ -63,25 +63,25 @@ describe Data::ProcessData do
     it 'should create an artwork' do
       Data::ProcessData.process("artworks", artwork_data)
       artwork = Artwork.last
-      artwork.title.should eq("El esgrimista")
-      artwork.museum_id.should eq(7)
-      artwork.technique.should eq("Yeso patinado")
+      expect(artwork.title).to eq("El esgrimista")
+      expect(artwork.museum_id).to eq(7)
+      expect(artwork.technique).to eq("Yeso patinado")
     end
 
     it 'should create an artwork for an artist' do
       Data::ProcessData.process("artists", artist_data)
       Data::ProcessData.process("artworks", artwork_with_artist_data)
       artwork = Artwork.last
-      artwork.title.should eq("Flux Capacitor")
-      artwork.museum_id.should eq(3)
-      artwork.technique.should eq("Pixels")
+      expect(artwork.title).to eq("Flux Capacitor")
+      expect(artwork.museum_id).to eq(3)
+      expect(artwork.technique).to eq("Pixels")
     end
 
     it 'should add 1 to artist_artwork_count' do
       Data::ProcessData.process("artists", artist_data)
       Data::ProcessData.process("artworks", artwork_with_artist_data)
       artist = Artist.last
-      artist.artworks_count.should eq(1)
+      expect(artist.artworks_count).to eq(1)
     end
 
     it 'should create several artworks' do
@@ -89,7 +89,7 @@ describe Data::ProcessData do
       expect {
         Data::ProcessData.process("artworks", artworks_data)
       }.to change { Artwork.count }.by(line_count(artworks_data))
-      Artwork.all.map(&:title).should =~ ["DeLorean", "Mr Fusion", "Flux Capacitor"]
+      expect(Artwork.all.map(&:title)).to match ["DeLorean", "Mr Fusion", "Flux Capacitor"]
     end
   end
 
@@ -110,7 +110,7 @@ describe Data::ProcessData do
   end
 
   def line_count(file)
-    file.lines.to_a.size
+    file.each_line.to_a.size
   ensure
     file.rewind
   end

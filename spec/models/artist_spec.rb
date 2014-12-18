@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Artist do
   describe "saving artist" do
@@ -21,13 +21,13 @@ describe Artist do
     it "should not save an artist with not-unique museum id" do
       museum_id = @id
       artist = Artist.create(:name => "Steve Rogers", :museum_id => museum_id)
-      artist.persisted?.should be false
+      expect(artist.persisted?).to be false
     end
 
     it "should not save an artist without name" do
       museum_id = 99999999999
       artist = Artist.create(:museum_id => museum_id)
-      artist.persisted?.should be false
+      expect(artist.persisted?).to be false
     end
   end
 end
