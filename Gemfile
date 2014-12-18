@@ -3,6 +3,7 @@ ruby '2.1.4'
 
 gem 'rails', '3.2'
 gem 'unicorn'
+gem "pg"
 
 group :test do
   # Pretty printed test output
@@ -18,6 +19,8 @@ group :development do
   gem 'sqlite3'
 end
 
-group :production do
-  gem "pg"
+group :assets do
+  gem 'therubyracer'
+  gem 'sass-rails'
+  gem 'uglifier'
 end
